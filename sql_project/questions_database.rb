@@ -2,6 +2,7 @@ require 'sqlite3'
 require 'singleton'
 require_relative 'qquestions_questions.rb'
 require_relative 'qreplies_questions.rb'
+require_relative 'qfollows_questions.rb'
 
 class QuestionsDatabase < SQLite3::Database
   include Singleton
@@ -55,5 +56,10 @@ class User
   def authored_replies
     Reply.find_by_author_id(@id)
   end
+  
+  def followed_questions
+    QuestionFollows.followed_questions_for_user_id(@id)
+  end
+  
   
 end

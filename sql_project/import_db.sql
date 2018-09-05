@@ -139,7 +139,9 @@ VALUES
 
 -- and here is the lazy way to add some seed data:
 INSERT INTO question_likes (user_id, question_id) VALUES (1, 1);
-INSERT INTO question_likes (user_id, question_id) VALUES (1, 2);
+INSERT INTO question_likes (user_id, question_id) VALUES (2, 2);
+INSERT INTO question_likes (user_id, question_id) VALUES (1, 3);
+INSERT INTO question_likes (user_id, question_id) VALUES (2, 3);
 
 
 -- TAGS

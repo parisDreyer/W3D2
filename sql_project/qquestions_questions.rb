@@ -53,4 +53,13 @@ class Questions
   def replies 
     Reply.find_by_question_id(@id)
   end
+  
+  def followers 
+    QuestionFollows.followers_for_question_id(@id)
+  end
+  
+  def self.most_followed(n)
+    QuestionFollows.most_followed_questions(n)
+  end
+  
 end

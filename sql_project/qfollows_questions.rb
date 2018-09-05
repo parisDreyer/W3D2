@@ -30,5 +30,62 @@ class QuestionFollows
     data.map { |d| QuestionFollows.new(d) }
   end
   
+  def self.followers_for_question_id(question_id)
+    followers = QuestionsDatabase.instance.execute(<<-SQL, question_id)
+      SELECT 
+        *
+      FROM 
+        question_follows 
+      JOIN
+        users 
+      ON 
+        users.id = question_follows.user_id
+      WHERE 
+        question_follows.question_id = ?
+    SQL
+    return nil if followers.empty?
+    
+    followers.map { |f| User.new(f) }
+  end
   
+  def self.followed_questions_for_user_id(user_id)
+    followers = QuestionsDatabase.instance.execute(<<-SQL, user_id)
+      SELECT 
+        *
+      FROM 
+        question_follows 
+      JOIN
+        questions
+      ON 
+        questions.id = question_follows.user_id
+      WHERE 
+        question_follows.user_id = ?
+    SQL
+    return nil if followers.empty?
+    
+    followers.map { |f| Questions.new(f) }
+  end
+  
+  def self.most_followed_questions(n)
+    followers = QuestionsDatabase.instance.execute(<<-SQL, n)
+      SELECT 
+        *
+      FROM 
+        question_follows 
+      JOIN
+        questions
+      ON 
+        questions.id = question_follows.user_id
+      GROUP BY
+        title
+      ORDER BY COUNT(title)
+      LIMIT ?
+        
+    SQL
+    return nil if followers.empty?
+    
+    followers.map { |f| Questions.new(f) }
+  end
+  
+
 end
